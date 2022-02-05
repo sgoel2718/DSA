@@ -1,0 +1,20 @@
+#include <iostream>
+using namespace std;
+
+int main()
+{
+    int n,m;
+    cin>>n>>m;
+    vector<int> adj[n+1];
+    // int adj[n+1][n+1]; // for adjacency matrix
+    int i,u,v;
+    for(i=0;i<m;i++)
+    {
+        cin>>u>>v;              // cin>>u>>v>>wt;
+        adj[u].push_back(v);    // for weighted graph - adj[u].push_back({v,wt});
+        adj[v].push_back(u);    // omit if directed graph
+        // adj[u][v]=1;  // for adjacency matrix
+        // adj[v][u]=1;  // for adjacency matrix
+    }
+    return 0;
+}
