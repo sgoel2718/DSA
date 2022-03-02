@@ -1,0 +1,56 @@
+#include <iostream>
+#include <vector>
+#include <queue>
+using namespace std;
+
+vector<int> bfsOfGraph(int N,vector<int> adj[])
+{
+    int i;
+    vector<int> bfs;
+    vector<int> vis(N+1,0);
+    
+    for(i=1;i<=N;i++)
+    {
+        if(!vis[i])
+        {
+            queue<int> q;
+            q.push(i);
+            vis[i]=1;
+            while(!q.empty())
+            {
+                int node=q.front();
+                q.pop();
+                bfs.push_back(node);
+                for(auto i : adj[node])
+                {
+                    if(!vis[i])
+                    {
+                        q.push(i);
+                        vis[i]=1;
+                    }
+                }
+            }
+        }
+    }
+    return bfs;
+}
+
+int main()
+{
+    int n,m;
+    cin>>n>>m;
+    vector<int> adj[n+1];
+    int u,v;
+    for(int i=0;i<m;i++)
+    {
+        cin>>u>>v;
+        adj[u].push_back(v);
+        adj[v].push_back(u);
+    }
+    vector<int> res = bfsOfGraph(n,adj);
+    for(auto i: res)
+    {
+        cout<<i<<" ";
+    }
+    return 0;
+}

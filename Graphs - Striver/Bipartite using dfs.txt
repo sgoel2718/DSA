@@ -1,0 +1,54 @@
+#include <iostream>
+#include <vector>
+#include <queue>
+using namespace std;
+
+bool bipartitedfs(int node, vector<int> adj[], vector<int>& col)
+{
+    if(col[node]==-1) 
+        col[node]=1;
+    for(auto i : adj[node])
+    {
+        if(col[i]==-1)
+        {
+            col[i]=1-col[node];
+            if(!bipartitedfs(i,adj,col))
+                return false;
+        }
+        else if(col[i]==col[node])
+            return false;
+    }
+    return true;
+}
+
+bool bipartite(int N,vector<int> adj[])
+{
+    int i;
+    vector<int> colour(N,-1);
+    
+    for(i=0;i<N;i++)
+    {
+        if(colour[i]==-1)
+        {
+            if(!bipartitedfs(i,adj,colour))
+                return false;
+        }
+    }
+    return true;
+}
+
+int main()
+{
+    int n,m;
+    cin>>n>>m;
+    vector<int> adj[n+1];
+    int u,v;
+    for(int i=0;i<m;i++)
+    {
+        cin>>u>>v;
+        adj[u].push_back(v);
+        adj[v].push_back(u);
+    }
+    cout<<bipartite(n,adj);
+    return 0;
+}

@@ -1,0 +1,59 @@
+#include <iostream>
+#include <vector>
+#include <queue>
+using namespace std;
+
+bool topoSortbfs(int N,vector<int> adj[])
+{
+    queue<int> q;
+    int i;
+    vector<int> indegree(N,0);
+    
+    for(i=0;i<N;i++)
+    {
+        for(auto it : adj[i])
+        {
+            indegree[it]++;
+        }
+    }
+    
+    for(i=0;i<N;i++)
+    {
+        if(indegree[i]==0)
+            q.push(i);
+    }
+    
+    // vector<int> topo;
+    int c=0;
+    while(!q.empty())
+    {
+        int node=q.front();
+        q.pop();
+        // topo.push_back(node);
+        c++;
+        for(auto it: adj[node])
+        {
+            indegree[it]--;
+            if(indegree[it]==0)
+                q.push(it);
+        }
+    }
+    // return topo;
+    if(c==N) return false;
+    return true;
+}
+
+int main()
+{
+    int n,m;
+    cin>>n>>m;
+    vector<int> adj[n+1];
+    int u,v;
+    for(int i=0;i<m;i++)
+    {
+        cin>>u>>v;
+        adj[u].push_back(v);
+    }
+    cout<<topoSortbfs(n,adj);
+    return 0;
+}

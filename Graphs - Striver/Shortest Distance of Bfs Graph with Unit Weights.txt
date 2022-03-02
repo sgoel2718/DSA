@@ -1,0 +1,49 @@
+#include <iostream>
+#include <vector>
+#include <queue>
+#include <climits>
+using namespace std;
+
+vector<int> disOfBfsGraph(int N,vector<int> adj[], int src)
+{
+    queue<int> q;
+    int i;
+    vector<int> dis(N,INT_MAX);
+    dis[src]=0;
+    q.push(src);
+    while(!q.empty())
+    {
+        int node=q.front();
+        q.pop();
+        for(auto i : adj[node])
+        {
+            if(dis[node]+1<dis[i])
+            {
+                dis[i]=dis[node]+1;
+                q.push(i);
+            }
+        }
+    }
+    return dis;
+}
+
+int main()
+{
+    int n,m;
+    cin>>n>>m;
+    vector<int> adj[n+1];
+    int u,v,src;
+    for(int i=0;i<m;i++)
+    {
+        cin>>u>>v;
+        adj[u].push_back(v);
+        adj[v].push_back(u);
+    }
+    cin>>src;
+    vector<int> res = disOfBfsGraph(n,adj,src);
+    for(auto i: res)
+    {
+        cout<<i<<" ";
+    }
+    return 0;
+}

@@ -1,0 +1,67 @@
+#include <iostream>
+#include <vector>
+#include <stack>
+#include <climits>
+using namespace std;
+
+void foundTopoSort(int node, vector<pair<int,int>> adj[], vector<int>& vis, stack<int>& st)
+{
+    vis[node]=1;
+    for(auto i : adj[node])
+    {
+        if(!vis[i.first])
+        {
+            foundTopoSort(i.first,adj,vis,st);
+        }
+    }
+    st.push(node);
+}
+
+void shortestPath(int src, int n, vector<pair<int,int>> adj[])
+{
+    vector<int> vis(n,0);
+    stack<int> st;
+    for(int i=0;i<n;i++)
+    {
+        if(!vis[i])
+            foundTopoSort(i,adj,vis,st);
+    }
+    
+    vector<int> dis(n,INT_MAX);
+    dis[src]=0;
+    
+    while(!st.empty())
+    {
+        int node=st.top();
+        st.pop();
+        if(dis[node]!=INT_MAX) 
+        {
+            for(auto i : adj[node])
+            {
+                if(dis[node]+i.second<dis[i.first])
+                {
+                    dis[i.first]=dis[node]+i.second;
+                }
+            }
+        }
+    }
+    
+    for (int i = 0; i < n; i++) 
+		(dis[i] == 1e9)? cout << "INF ": cout << dis[i] << " "; 
+}
+
+int main()
+{
+    int n,m;
+    cin>>n>>m;
+    vector<pair<int,int>> adj[n+1];
+    int u,v,w,src;
+    for(int i=0;i<m;i++)
+    {
+        cin>>u>>v>>w;
+        adj[u].push_back({v,w});
+    }
+    cin>>src;
+    shortestPath(src,n,adj);
+    return 0;
+}
